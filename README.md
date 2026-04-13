@@ -47,4 +47,4 @@ Provisioning AWS infrastructure using Terraform with a flat file structure.
 - Security Group as EC2 firewall
 - Dynamic AMI fetch using data source
 - User data script for bootstrapping Nginx
-- Credential security using tfvars and gitignore
+- Credential security using tfvars and gitignore 
