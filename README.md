@@ -92,9 +92,14 @@ Recommended: remove `access_key` and `secret_key` from the provider block and us
 
 ## Author
 
-**Mohan M** — AWS & DevOps Engineer
-```
+Mohan M
+
+AWS and DevOps Engineer (Fresher)
 
 ---
 
-This is final. Don't touch it further — it's clean, complete, and recruiter-ready. Push it.
+## Acknowledgement
+
+This project was built under the guidance of my trainer as part of the AWS and DevOps hands-on training program. All implementation, configuration, and documentation was done by me.
+
+---
