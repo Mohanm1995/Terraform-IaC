@@ -1,50 +1,100 @@
-# Terraform IaC Project - AWS VPC + EC2 + Nginx
+# Highly Available VPC Architecture on AWS using Terraform
 
-Provisioning AWS infrastructure using Terraform with a flat file structure.
+Provisions a production-style AWS network infrastructure using Terraform — multi-AZ VPC with public/private subnet isolation, NAT Gateway, and an Nginx EC2 instance.
 
-## What This Project Does
+---
 
-- Creates a custom VPC with public and private subnets
-- Sets up an Internet Gateway and Route Table for public internet access
-- Launches an EC2 instance in the public subnet
-- Installs and starts Nginx automatically on boot
-- Uses a Security Group to allow HTTP (port 80) and SSH (port 22)
+## Architecture
 
-## Tech Stack
+- Custom VPC (`10.0.0.0/16`) with DNS support enabled
+- 2 Public Subnets across `ap-south-1a` and `ap-south-1b`
+- 6 Private Subnets across `ap-south-1a` and `ap-south-1b`
+- Internet Gateway → Public Route Table (public internet access)
+- NAT Gateway with Elastic IP → Private Route Tables (outbound only)
+- Security Group with SSH (22) and HTTP (80) inbound rules
+- EC2 instance (`t3.micro`, Amazon Linux) with Nginx auto-installed via User Data
 
-- Terraform
-- AWS (VPC, EC2, Security Group, IGW, Route Table)
-- Nginx
-- Amazon Linux 2
+---
 
-## File Structure
-- provider.tf       # AWS provider and region configuration
-- variables.tf      # Input variable declarations
-- terraform.tfvars  # Actual credential values (not pushed to GitHub)
-- data.tf           # Fetches latest Amazon Linux AMI dynamically
-- resources.tf      # All AWS resources
+## Project Structure
 
-## How to Run
+```
+.
+├── provider.tf       # AWS provider and region configuration
+├── resources.tf      # All AWS resources
+├── .gitignore        # Excludes state files and credentials
+└── README.md
+```
 
-1. Clone the repo
-2. Create a `terraform.tfvars` file with your AWS credentials:
-    - aws_access_key = "your-access-key"
-    - aws_secret_key = "your-secret-key"    
-## Run the following commands:
-     terraform init
-     terraform plan
-     terraform apply
-3. After apply, copy the EC2 public IP and open it in your browser to see Nginx running
+---
 
-## How to Destroy
-     terraform destroy
+## Prerequisites
+
+- Terraform installed
+- AWS CLI configured
+- IAM user with EC2 and VPC permissions
+
+---
+
+## Deploy
+
+```bash
+git clone <repo-url>
+cd <repo-name>
+
+terraform init
+terraform validate
+terraform plan
+terraform apply
+```
+
+After apply, copy the EC2 public IP and open `http://<public-ip>` in your browser — you should see the Nginx welcome page.
+
+---
+
+## Destroy
+
+```bash
+terraform destroy
+```
+
+---
 
 ## Key Concepts Covered
 
-- Custom VPC with CIDR block
-- Public and private subnet design
-- Internet Gateway and Route Table association
-- Security Group as EC2 firewall
-- Dynamic AMI fetch using data source
-- User data script for bootstrapping Nginx
-- Credential security using tfvars and gitignore 
+- Multi-AZ subnet design with public and private isolation
+- Internet Gateway for public subnet internet access
+- NAT Gateway for private subnet outbound access
+- Route Table associations per subnet tier
+- Security Group as EC2 firewall (SSH + HTTP)
+- Nginx bootstrapping via EC2 User Data
+- Credential security using `.gitignore`
+
+---
+
+## Security Note
+
+Do not hardcode AWS credentials in `provider.tf`.  
+Recommended: remove `access_key` and `secret_key` from the provider block and use `aws configure` or an IAM role on EC2.
+
+---
+
+## Future Enhancements
+
+- Application Load Balancer + Auto Scaling Group
+- RDS (database tier)
+- Bastion Host for private subnet access
+- CloudWatch monitoring and alerts
+- S3 backend for Terraform state
+- Modular Terraform structure
+
+---
+
+## Author
+
+**Mohan M** — AWS & DevOps Engineer
+```
+
+---
+
+This is final. Don't touch it further — it's clean, complete, and recruiter-ready. Push it.
