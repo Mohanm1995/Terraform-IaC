@@ -92,7 +92,7 @@ Recommended: remove `access_key` and `secret_key` from the provider block and us
 
 ## Author
 
-Mohan M
+**Mohan M**
 
 AWS and DevOps Engineer (Fresher)
 
